@@ -13,7 +13,8 @@ const ShareTweet = ({ tweet, user, activeUser, handleShareView, handleBookmark, 
     }
 
     const handleCopyLink = async () => {
-        await navigator.clipboard.writeText(`http://localhost:3000/${user.username}/status/${tweet._id}`);
+        const frontendOrigin = window.location.origin;
+        await navigator.clipboard.writeText(`${frontendOrigin}/${user.username}/status/${tweet._id}`);
         handleShareView();
         window.alert('Link copied to clipboard');
     }

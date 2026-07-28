@@ -4,6 +4,8 @@ import './Tweet.scss';
 import profilePic from '../../assets/images/default-profile-pic.png';
 import TweetFooter from '../TweetFooter/TweetFooter';
 
+const apiBase = (process.env.REACT_APP_API_URL || '').replace(/\/$/, '');
+
 const Tweet = ({ 
     tweet, 
     user, 
@@ -38,9 +40,9 @@ const Tweet = ({
 
     const getOriginalTweetUser = async () => {
         try {
-            const tweetRes = await fetch(`/api/tweets/${tweet.replyTo}`);
+            const tweetRes = await fetch(`${apiBase}/api/tweets/${tweet.replyTo}`);
             const originalTweet = await tweetRes.json();
-            const userRes = await fetch(`/api/users/${originalTweet.userId}`);
+            const userRes = await fetch(`${apiBase}/api/users/${originalTweet.userId}`);
             const user = await userRes.json();
             setOriginalTweetUsername(user.username);
         } catch (err) {

@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
  */
 class PostComposerServiceClient {
   constructor() {
-    this.basePath = '/api/composer-posts';
+    const apiBase = (process.env.REACT_APP_API_URL || '').replace(/\/$/, '');
+    this.basePath = `${apiBase}/api/composer-posts`;
   }
 
   /**
