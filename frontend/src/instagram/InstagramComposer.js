@@ -200,8 +200,11 @@ function InstagramComposer() {
   }
 
   async function submitComposer(status) {
-    if (!formState.title.trim() || !formState.description.trim()) {
-      setStatusMessage('Title and description are required.');
+    const captionText = formState.description.trim();
+    const titleText = formState.title.trim();
+
+    if (!mediaFile && !captionText && !titleText) {
+      setStatusMessage('Please select an image or write a caption before posting.');
       return;
     }
 
@@ -210,10 +213,13 @@ function InstagramComposer() {
       return;
     }
 
+    const titleToUse = titleText || (captionText ? captionText.split('\n')[0].substring(0, 50) : 'Instagram Post');
+    const descriptionToUse = captionText || titleText || 'No caption';
+
     const payload = new FormData();
     payload.append('platform', 'instagram');
-    payload.append('title', formState.title);
-    payload.append('description', formState.description);
+    payload.append('title', titleToUse);
+    payload.append('description', descriptionToUse);
     payload.append('status', status);
 
     if (formState.scheduleAt) {
@@ -419,12 +425,11 @@ function InstagramComposer() {
                 </button>
                 <button
                   type="button"
-                  className="ig-share-btn"
-                  style={{ fontWeight: '700' }}
+                  className="ig-post-submit-btn"
                   onClick={() => submitComposer('posted')}
                   disabled={saving}
                 >
-                  Share
+                  {saving ? 'Posting...' : 'POST'}
                 </button>
               </footer>
             </div>
