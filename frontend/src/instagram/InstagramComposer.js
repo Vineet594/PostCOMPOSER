@@ -17,8 +17,12 @@ class PostComposerServiceClient {
   async getPosts() {
     const response = await fetch(this.basePath);
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.message || 'Unable to retrieve composer posts');
+      let errMsg = `Error ${response.status}: Unable to retrieve composer posts`;
+      try {
+        const err = await response.json();
+        errMsg = err.message || errMsg;
+      } catch (_) {}
+      throw new Error(errMsg);
     }
     return await response.json();
   }
@@ -32,8 +36,12 @@ class PostComposerServiceClient {
       body: formData,
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.message || 'Failed to submit post creation request');
+      let errMsg = `Error ${response.status}: Failed to submit post creation request`;
+      try {
+        const err = await response.json();
+        errMsg = err.message || errMsg;
+      } catch (_) {}
+      throw new Error(errMsg);
     }
     return await response.json();
   }
@@ -46,8 +54,12 @@ class PostComposerServiceClient {
       method: 'DELETE',
     });
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.message || 'Failed to request post deletion');
+      let errMsg = `Error ${response.status}: Failed to request post deletion`;
+      try {
+        const err = await response.json();
+        errMsg = err.message || errMsg;
+      } catch (_) {}
+      throw new Error(errMsg);
     }
     return true;
   }
